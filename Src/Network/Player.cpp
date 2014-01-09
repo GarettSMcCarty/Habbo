@@ -48,7 +48,10 @@ namespace Network
 	//---------------------------------------------------------------------
 	uint32_t Player::HandleHeader(const std::string& pData)
 	{
-		if(*(int*)pData.data() == 1819242556)
+		// FYI : 1819242556 == '<pol'
+		int32_t clean = ntohl(*(int*)pData.data());
+
+		if(clean == '<pol')
 		{
 			mPolicy = true;
 			return 19;
@@ -56,7 +59,7 @@ namespace Network
 
 		mPolicy = false;
 
-		return ntohl(*(int*)pData.data());
+		return clean;
 	}
 	//---------------------------------------------------------------------
 	bool	 Player::HandleContent(const std::string& pData)
